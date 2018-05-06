@@ -9,9 +9,9 @@ const async = require('async');
 // Post new message
 router.post("/", function (req, res) {
     let new_message = new message({
-        Contenue: req.body.Contenue,
-        vu: req.body.vu,
-        Date_msg: req.body.Date_msg,
+        content: req.body.content,
+        seen: req.body.seen,
+        Date_msg: new Date(),
         sender: req.body.sender,
         recipient: req.body.recipient
     })
@@ -39,12 +39,31 @@ router.get("/", function (req, res) {
     })
 })
 // Get message by id
-router.get("//:id", function (req, res) {
-    messages.findOne({_id: req.params.id}, function (err, messages) {
+router.get("/:id/:user", function (req, res) {
+    message.find({sender: req.params.id,recipient:req.params.user}, function (err, messages) {
         if (err) {
             res.json({success: false, description: "Get new message", error: err})
         } else {
-            res.json({success: true, description: "Get new message", data: messages})
+            let i,result={
+                "array":[]
+            };
+            for(i=0;i<messages.length;i++){
+                let x=messages[i];
+                result.array.push(    {
+                    "messageId":i+1,
+                    "userId":messages[i].sender,
+                    "userName":"Luff",
+                    "userImgUrl":"./assets/user.jpg",
+                    "toUserId":messages[i].recipient,
+                    "toUserName":"Hancock",
+                    "userAvatar":"./assets/to-user.jpg",
+                    "time":1488349800000,
+                    "message":JSON.parse(JSON.stringify(x)).content,
+                    "status":"success"
+
+                });
+            }
+            res.json(result)
         }
     })
 })
