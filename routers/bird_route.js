@@ -10,7 +10,7 @@ var jwt = require("jsonwebtoken");
 var config = require("./../config/database");
 var passport = require("passport");
 
-
+var ObjectId = require('mongodb').ObjectID;
 // Post new bird mat1
 router.post("/", passport.authenticate('JWT', { session: false }), function(req, res){
 	let new_bird = new bird({
@@ -21,7 +21,7 @@ router.post("/", passport.authenticate('JWT', { session: false }), function(req,
 		description: req.body.description,
 		Photo: req.body.Photo,
 		parent: req.body.parent,
-		owner: req.user._id
+		owners: req.user._id
 	})
 	new_bird.save(function(err, bird){
 		if (err) {
@@ -48,6 +48,17 @@ router.get("/",  function(req, res){
 	// 	module: 'bird',
 	// 	select: 'Num_bague'
 	// })
+	.exec(function(err, birds){
+		if (err) {
+			res.json({success: false, description: "Get new bird", error: err})
+		} else {
+			res.json({success: true, description: "Get new bird", data: birds})
+		}
+	})
+})
+// Get birds by user
+router.get("/user/:id",  function(req, res){
+	bird.find({owners:[ObjectId(req.params.id)]})
 	.exec(function(err, birds){
 		if (err) {
 			res.json({success: false, description: "Get new bird", error: err})
