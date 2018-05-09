@@ -40,7 +40,7 @@ router.get("/", function (req, res) {
 })
 // Get message by id
 router.get("/:id/:user", function (req, res) {
-    message.find({sender: req.params.id,recipient:req.params.user}, function (err, messages) {
+    message.find({sender: {$in:[req.params.id,req.params.user]},recipient:{$in:[req.params.id,req.params.user]}}, function (err, messages) {
         if (err) {
             res.json({success: false, description: "Get new message", error: err})
         } else {

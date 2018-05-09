@@ -6,7 +6,7 @@ var ObjectId = Schema.ObjectId;
 var messageSchema = new Schema({
 
 
-  Contenue: {
+  content: {
     type:String,required:true
   },
 
