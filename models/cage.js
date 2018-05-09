@@ -7,11 +7,11 @@ var cageSchema = new Schema({
 
   number:{
     type: Number,
-    required: true
+    // required: true
   },
   size : {
     type: String,
-    required: true
+    // required: true
   },
   couple: {
     type: Schema.Types.ObjectId,

@@ -16,7 +16,11 @@ var coupleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Bird'
     },
-    note: {
+    owner:{
+      type:Schema.Types.ObjectId,
+      ref:'User'
+    },
+    description: {
         type: String,
         required: false
     },

@@ -25,8 +25,8 @@ router.post("/", function(req, res){
 	})
 })
 // Get couples
-router.get("/", function(req, res){
-	couple.find(function(err, couples){
+router.get("/user/:id", function(req, res){
+	couple.find({owner:req.params.id},function(err, couples){
 		if (err) {
 			res.json({success: false, description: "Get new couple", error: err})
 		} else {

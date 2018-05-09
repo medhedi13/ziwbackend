@@ -18,7 +18,7 @@ router.post("/", function(req, res){
 	})
 	new_cage.save(function(err, cage){
 		if (err) {
-			res.json({success: false, description: "Post new cage", message: "cage registration faled", error: err})
+			res.json({success: false, description: "Post new cage", message: "cage registration failed", error: err})
 		} else {
 			res.json({success: true, description: "Post new cage", message: "cage registred", data: cage})
 		}
