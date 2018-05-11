@@ -10,11 +10,9 @@ router.post("/", function(req, res){
 	number:req.body.number,
 	size:req.body.size,
 	couple:req.body.couple,
-	bird:req.body.bird,
+	owner:req.body.owner,
 	eggs:req.body.eggs,
 	created:Date.now()
-
-
 	})
 	new_cage.save(function(err, cage){
 		if (err) {
@@ -34,6 +32,16 @@ router.get("/", function(req, res){
 		}
 	})
 })
+// Get cages
+router.get("/user/:id", function(req, res){
+	cage.find({owner:req.params.id},function(err, cages){
+		if (err) {
+			res.json({success: false, description: "Get new cage", error: err})
+		} else {
+			res.json({success: true, description: "Get new cage", data: cages})
+		}
+	})
+});
 // Get cage by id
 router.get("/:Num_cage", function(req, res){
 	cages.findOne({Num_cage: req.params.Num_cage}, function(err, cages){

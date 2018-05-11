@@ -17,9 +17,9 @@ var cageSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Couple'
   },
-  bird: {
+  owner: {
     type: Schema.Types.ObjectId,
-    ref: 'Bird'
+    ref: 'User'
   },
   eggs: {
     type: Number
