@@ -49,8 +49,9 @@ router.get("/:id/:user", function (req, res) {
             };
             for(i=0;i<messages.length;i++){
                 let x=messages[i];
+                let date=new Date(messages[i].Date_msg).getTime();
                 result.array.push(    {
-                    "messageId":i+1,
+                    "messageId":date,
                     "userId":messages[i].sender,
                     "userName":"Luff",
                     "userImgUrl":"./assets/user.jpg",
