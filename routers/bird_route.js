@@ -12,16 +12,14 @@ var passport = require("passport");
 
 var ObjectId = require('mongodb').ObjectID;
 // Post new bird mat1
-router.post("/", passport.authenticate('JWT', { session: false }), function(req, res){
+router.post("/", function(req, res){
 	let new_bird = new bird({
 		ring: req.body.ring,
 		name: req.body.name,
 		family: req.body.family,
 		birth: req.body.birth,
 		description: req.body.description,
-		Photo: req.body.Photo,
-		parent: req.body.parent,
-		owners: req.user._id
+		owner: req.body.owner
 	})
 	new_bird.save(function(err, bird){
 		if (err) {
@@ -58,7 +56,7 @@ router.get("/",  function(req, res){
 })
 // Get birds by user
 router.get("/user/:id",  function(req, res){
-	bird.find({owners:[ObjectId(req.params.id)]})
+	bird.find({owner:ObjectId(req.params.id)})
 	.exec(function(err, birds){
 		if (err) {
 			res.json({success: false, description: "Get new bird", error: err})
