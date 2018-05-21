@@ -35,9 +35,9 @@ var birdSchema = new Schema({
   description: {
     type: String
   },
-  photos: [{
+  photos: {
       type:String
-  }],
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',

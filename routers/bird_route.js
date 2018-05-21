@@ -19,7 +19,8 @@ router.post("/", function(req, res){
 		family: req.body.family,
 		birth: req.body.birth,
 		description: req.body.description,
-		owner: req.body.owner
+		owner: req.body.owner,
+        photos:req.body.photos
 	})
 	new_bird.save(function(err, bird){
 		if (err) {
