@@ -35,7 +35,25 @@ router.post("/", function (req, res) {
 })
 // Get publications
 router.get("/", function (req, res) {
-    publication.find(function (err, publications) {
+    publication.aggregate([{
+        "$lookup":{
+            from:"users",
+            localField:"user",
+            foreignField:"_id",
+            as:"userInfo"
+        }
+    }]).sort({created:'desc'}).exec(function (err, publications) {
+        if (err)
+        { console.log(err);
+            res.json({success: false, description: "Get new publication", error: err});
+        } else {
+            res.json({success: true, description: "Get new publication", data: publications});
+        }
+    })
+})
+// Get publications
+router.get("/user/:id", function (req, res) {
+    publication.find({user:req.params.id},function (err, publications) {
         if (err) {
             res.json({success: false, description: "Get new publication", error: err})
         } else {
@@ -44,7 +62,7 @@ router.get("/", function (req, res) {
     })
 })
 // Get publication by id
-router.get("//:id", function (req, res) {
+router.get("/:id", function (req, res) {
     publications.findOne({_id: req.params.id}, function (err, publications) {
         if (err) {
             res.json({success: false, description: "Get new publication", error: err})
