@@ -176,7 +176,7 @@ router.put("/:id", function(req, res){
                         email:req.body.email,
                         password:Users.password,
                         city:req.body.city,
-                        avatar:Users.avatar,
+                        avatar:req.body.avatar,
                         created:Users.created,
                         updated:new Date()
 
@@ -184,7 +184,7 @@ router.put("/:id", function(req, res){
                 },
                 {
                     new: true
-                }, (err, User) =>{
+                },function (err, User) {
                     if (err) {
                         res.json({success: false, description: "Update User", error: err})
                     } else {

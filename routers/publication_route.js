@@ -11,7 +11,6 @@ router.post("/", function (req, res) {
     let new_publication = new publication({
         content: req.body.content,
         user: req.body.user,
-        likes: req.body.likes,
         photos: req.body.photos,
         created: Date.now()
     })
@@ -69,6 +68,36 @@ router.get("/:id", function (req, res) {
         } else {
             res.json({success: true, description: "Get new publication", data: publications})
         }
+    })
+})
+
+router.post("/like/:id", function (req, res) {
+    publication.findOne({_id: req.params.id,likes:{$in:[req.body.userid]}}).exec(function (err, publications) {
+
+
+        if (err)
+            res.json({success: false, description: "failed", error: err})
+
+        if(publications==null||publications.length>0)
+            publication.findByIdAndUpdate({_id:req.params.id},{$push:{likes:req.body.userid}}).exec(function (err,data) {
+
+            if (err) {
+                res.json({success: false, description: "like post", error: err})
+            } else {
+                res.json({success: true, description: "like post", data: data})
+            }
+        })
+        else
+            publication.findByIdAndUpdate({_id:req.params.id},{$pull:{likes:req.body.userid}}).exec(function (err,data) {
+
+                if (err) {
+                    res.json({success: false, description: "unlike post", error: err})
+                } else {
+                    res.json({success: true, description: "unlike post", data: data})
+                }
+            })
+
+
     })
 })
 // Delete publication by id

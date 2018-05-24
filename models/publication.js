@@ -15,10 +15,8 @@ var publicationSchema = new Schema({
     },
     likes: [
         {
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     ],
     photos: {type: String},

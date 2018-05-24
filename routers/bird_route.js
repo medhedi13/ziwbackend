@@ -97,7 +97,7 @@ router.put("/:id", function(req, res){
 			family: req.body.family,
 			birth: req.body.birth,
 			description: req.body.description,
-			Photo: req.body.Photo,
+			photos: req.body.photos,
 			parent: req.body.parent
 		}
 	},
