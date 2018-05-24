@@ -30,13 +30,13 @@ var passport = require('passport');
 				(callback) => {
 
 						let new_user = new User({
-						first_name:req.body.first_name,
-						last_name: req.body.last_name,
+						first_name:req.body.first_name?req.body.first_name:"user",
+						last_name: req.body.last_name?req.body.last_name:"",
 						phone:req.body.phone,
 						email:req.body.email,
 						password:req.body.password,
 						city:req.body.city,
-						avatar:req.body.avatar,
+						avatar:"http://res.cloudinary.com/medhamza911/image/upload/c_scale,w_147/v1527195355/avatar-1577909_960_720.png",
 						created: Date.now()
 					})
 					new_user.save(function(err, user){
