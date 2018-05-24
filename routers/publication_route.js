@@ -6,6 +6,7 @@ var publication = require('./../models/publication.js');
 const async = require('async');
 
 
+var ObjectId = require('mongodb').ObjectID;
 // Post new publication
 router.post("/", function (req, res) {
     let new_publication = new publication({
@@ -35,15 +36,15 @@ router.post("/", function (req, res) {
 // Get publications
 router.get("/", function (req, res) {
     publication.aggregate([{
-        "$lookup":{
-            from:"users",
-            localField:"user",
-            foreignField:"_id",
-            as:"userInfo"
+        "$lookup": {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "userInfo"
         }
-    }]).sort({created:'desc'}).exec(function (err, publications) {
-        if (err)
-        { console.log(err);
+    }]).sort({created: 'desc'}).exec(function (err, publications) {
+        if (err) {
+            console.log(err);
             res.json({success: false, description: "Get new publication", error: err});
         } else {
             res.json({success: true, description: "Get new publication", data: publications});
@@ -52,7 +53,22 @@ router.get("/", function (req, res) {
 })
 // Get publications
 router.get("/user/:id", function (req, res) {
-    publication.find({user:req.params.id},function (err, publications) {
+    publication.aggregate([
+        {
+            "$match": {
+                "user": ObjectId(req.params.id)
+            }
+        },
+        {
+            "$lookup": {
+                from: "users",
+                localField: "user",
+                foreignField: "_id",
+                as: "userInfo"
+            }
+        }
+]).
+    sort({created: 'desc'}).exec(function (err, publications) {
         if (err) {
             res.json({success: false, description: "Get new publication", error: err})
         } else {
@@ -72,23 +88,23 @@ router.get("/:id", function (req, res) {
 })
 
 router.post("/like/:id", function (req, res) {
-    publication.findOne({_id: req.params.id,likes:{$in:[req.body.userid]}}).exec(function (err, publications) {
+    publication.findOne({_id: req.params.id, likes: {$in: [req.body.userid]}}).exec(function (err, publications) {
 
 
         if (err)
             res.json({success: false, description: "failed", error: err})
 
-        if(publications==null||publications.length>0)
-            publication.findByIdAndUpdate({_id:req.params.id},{$push:{likes:req.body.userid}}).exec(function (err,data) {
+        if (publications == null || publications.length > 0)
+            publication.findByIdAndUpdate({_id: req.params.id}, {$push: {likes: req.body.userid}}).exec(function (err, data) {
 
-            if (err) {
-                res.json({success: false, description: "like post", error: err})
-            } else {
-                res.json({success: true, description: "like post", data: data})
-            }
-        })
+                if (err) {
+                    res.json({success: false, description: "like post", error: err})
+                } else {
+                    res.json({success: true, description: "like post", data: data})
+                }
+            })
         else
-            publication.findByIdAndUpdate({_id:req.params.id},{$pull:{likes:req.body.userid}}).exec(function (err,data) {
+            publication.findByIdAndUpdate({_id: req.params.id}, {$pull: {likes: req.body.userid}}).exec(function (err, data) {
 
                 if (err) {
                     res.json({success: false, description: "unlike post", error: err})
