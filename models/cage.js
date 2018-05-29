@@ -13,9 +13,13 @@ var cageSchema = new Schema({
     type: String,
     // required: true
   },
-  couple: {
+  male: {
     type: Schema.Types.ObjectId,
-    ref: 'Couple'
+    ref: 'bird'
+  },
+  female: {
+    type: Schema.Types.ObjectId,
+    ref: 'bird'
   },
   owner: {
     type: Schema.Types.ObjectId,

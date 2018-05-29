@@ -9,7 +9,8 @@ router.post("/", function(req, res){
 	let new_cage = new cage({
 	number:req.body.number,
 	size:req.body.size,
-	couple:req.body.couple,
+	female:req.body.female,
+	male:req.body.male,
 	owner:req.body.owner,
 	eggs:req.body.eggs,
 	created:Date.now()
