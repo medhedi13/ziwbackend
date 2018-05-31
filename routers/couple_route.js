@@ -45,6 +45,13 @@ router.get("/user/:id", function (req, res) {
                 foreignField: "_id",
                 as: "femaleInfo"
             }
+        },
+
+        {
+            "$match": {
+                "maleInfo": { $size: 1 },
+                "femaleInfo": { $size: 1 },
+            }
         }
     ]).exec(function (err, couples) {
         if (err) {

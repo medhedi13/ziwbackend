@@ -20,7 +20,9 @@ router.post("/", function(req, res){
 		birth: req.body.birth,
 		description: req.body.description,
 		owner: req.body.owner,
-        photos:req.body.photos
+        photos:req.body.photos,
+        onsale:req.body.onsale,
+        prix:req.body.prix
 	})
 	new_bird.save(function(err, bird){
 		if (err) {
@@ -47,6 +49,30 @@ router.get("/",  function(req, res){
 	// 	module: 'bird',
 	// 	select: 'Num_bague'
 	// })
+	.exec(function(err, birds){
+		if (err) {
+			res.json({success: false, description: "Get new bird", error: err})
+		} else {
+			res.json({success: true, description: "Get new bird", data: birds})
+		}
+	})
+})
+router.get("/onsale/",  function(req, res){
+	bird.aggregate([
+        {
+            "$match": {
+                "onsale": true
+            }
+        },
+        {
+            "$lookup": {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "userInfo"
+            }
+        }
+    ])
 	.exec(function(err, birds){
 		if (err) {
 			res.json({success: false, description: "Get new bird", error: err})
@@ -98,7 +124,9 @@ router.put("/:id", function(req, res){
 			birth: req.body.birth,
 			description: req.body.description,
 			photos: req.body.photos,
-			parent: req.body.parent
+			parent: req.body.parent,
+            onsale:req.body.onsale,
+            prix:req.body.prix
 		}
 	},
 	{

@@ -8,11 +8,11 @@ var ObjectId = require('mongodb').ObjectID;
 // Post new cage
 router.post("/", function (req, res) {
     let new_cage = new cage({
-        number: req.body.number,
+        number: Number(req.body.number),
         size: req.body.size,
         couple: req.body.couple,
         owner: req.body.owner,
-        eggs: req.body.eggs,
+        eggs: Number(req.body.eggs),
         created: Date.now()
     })
     new_cage.save(function (err, cage) {
@@ -64,6 +64,13 @@ router.get("/user/:id", function (req, res) {
                 foreignField: "_id",
                 as: "maleInfo"
             }
+        },
+        {
+            "$match": {
+                "maleInfo": { $size: 1 },
+                "femaleInfo": { $size: 1 },
+                "coupleInfo": { $size: 1 },
+            }
         }
     ]).exec(function (err, cages) {
         if (err) {
@@ -99,10 +106,11 @@ router.delete("/:id", function (req, res) {
 router.put("/:id", function (req, res) {
     cage.findByIdAndUpdate(req.params.id, {
             $set: {
-                Num_cage: req.body.Num_cage,
-                type: req.body.type,
-                id_couple: req.body.couple,
-                num_oeuf: req.body.num_oeuf
+                number: Number(req.body.number),
+                size: req.body.size,
+                couple: req.body.couple,
+                owner: req.body.owner,
+                eggs: Number(req.body.eggs),
             }
         },
         {

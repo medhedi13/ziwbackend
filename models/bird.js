@@ -35,6 +35,12 @@ var birdSchema = new Schema({
   description: {
     type: String
   },
+  onsale: {
+    type: Boolean
+  },
+  prix: {
+    type: String
+  },
   photos: {
       type:String
   },
