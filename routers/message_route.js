@@ -69,8 +69,8 @@ router.get("/:id/:user", function (req, res) {
     })
 })
 // Delete message by id
-router.delete("/:id", function (req, res) {
-    message.remove({_id: req.params.id}, function (err, done) {
+router.delete("/:id/:user", function (req, res) {
+    message.remove({sender: {$in:[req.params.id,req.params.user]},recipient:{$in:[req.params.id,req.params.user]}}, function (err, done) {
         if (err) {
             res.json({success: false, description: "Delete message", error: err})
         } else if (!done) {

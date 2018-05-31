@@ -227,6 +227,7 @@ router.delete("/:id", function (req, res) {
     User.remove({_id: req.params.id}, (err, done) => {
         if (err) {
             res.json({success: false, description: "Delete User", error: err})
+
         } else if (!done) {
             res.json({success: true, description: "Delete User", message: "User not deleted, try again"})
         } else {
