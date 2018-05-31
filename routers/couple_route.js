@@ -9,6 +9,9 @@ router.post("/", function (req, res) {
     let new_couple = new couple({
         male: req.body.male,
         female: req.body.female,
+        owner:req.body.owner,
+        name:req.body.name,
+        description:req.body.description,
         created: new Date()
     })
     new_couple.save(function (err, couple) {
@@ -58,7 +61,8 @@ router.put("/:id", function (req, res) {
                 name: req.body.name,
                 male: req.body.male,
                 female: req.body.female,
-                note: req.body.note,
+                owner:req.body.owner,
+                description: req.body.description,
                 created: req.body.created
             }
         },
