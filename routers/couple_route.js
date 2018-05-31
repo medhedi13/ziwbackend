@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 var couple = require('./../models/couple.js');
 const async = require('async');
-
+var ObjectId = require('mongodb').ObjectID;
 // Post new couple
 router.post("/", function (req, res) {
     let new_couple = new couple({
@@ -24,7 +24,29 @@ router.post("/", function (req, res) {
 })
 // Get couples
 router.get("/user/:id", function (req, res) {
-    couple.find({owner: req.params.id}, function (err, couples) {
+    couple.aggregate([
+        {
+            "$match": {
+                "owner": ObjectId(req.params.id)
+            }
+        },
+        {
+            "$lookup": {
+                from: "birds",
+                localField: "male",
+                foreignField: "_id",
+                as: "maleInfo"
+            }
+        },
+        {
+            "$lookup": {
+                from: "birds",
+                localField: "female",
+                foreignField: "_id",
+                as: "femaleInfo"
+            }
+        }
+    ]).exec(function (err, couples) {
         if (err) {
             res.json({success: false, description: "Get new couple", error: err})
         } else {
