@@ -5,37 +5,33 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var cageSchema = new Schema({
 
-  number:{
-    type: Number,
-    // required: true
-  },
-  size : {
-    type: String,
-    // required: true
-  },
-  male: {
-    type: Schema.Types.ObjectId,
-    ref: 'bird'
-  },
-  female: {
-    type: Schema.Types.ObjectId,
-    ref: 'bird'
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  eggs: {
-    type: Number
-  },
-  created:{
-    type: Date
-  },
-  updated:{
-    type: Date
-  },
+    number: {
+        type: Number,
+        // required: true
+    },
+    size: {
+        type: String,
+        // required: true
+    },
+    couple: {
+        type: Schema.Types.ObjectId,
+        ref: 'Couple'
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    eggs: {
+        type: Number
+    },
+    created: {
+        type: Date
+    },
+    updated: {
+        type: Date
+    },
 
 
 });
 
-var cage =module.exports = mongoose.model('cage', cageSchema);
+var cage = module.exports = mongoose.model('cage', cageSchema);
